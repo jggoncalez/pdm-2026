@@ -43,7 +43,11 @@ class _HumorAppState extends State<HumorApp> {
                 _ => Icons.sentiment_dissatisfied_sharp,
               },
               size: 100,
-              color: Colors.yellow,
+              color: switch(index){
+                0 => Colors.yellow,
+                1 => Colors.blueGrey,
+                _ => Colors.red
+              },
             ),
 
             ElevatedButton(
