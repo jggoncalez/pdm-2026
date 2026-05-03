@@ -42,7 +42,7 @@ class DbHelper {
 
   Future<List<Item>> getItems() async {
     final db = await database;
-    final maps = await db.query('dados', orderBy: 'titulo ASC');
+    final maps = await db.query('dados', orderBy: 'titulo COLLATE NOCASE ASC');
     return maps.map((m) => Item.fromMap(m)).toList();
   }
 

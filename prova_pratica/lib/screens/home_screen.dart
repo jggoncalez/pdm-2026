@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadItems() async {
     final items = await DbHelper.instance.getItems();
+    items.sort((a, b) => a.titulo.toLowerCase().compareTo(b.titulo.toLowerCase()));
     setState(() {
       _items = items;
     });
@@ -65,9 +66,23 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _items.length,
               itemBuilder: (context, index) {
                 final item = _items[index];
+                final dt = DateTime.tryParse(item.data);
+                final dataFormatada = dt != null
+                    ? '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}'
+                    : item.data;
                 return ListTile(
                   title: Text(item.titulo),
-                  subtitle: Text(item.descricao),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.descricao),
+                      Text(
+                        'Criado em: $dataFormatada',
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  isThreeLine: true,
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () => _deleteItem(item.id!),
